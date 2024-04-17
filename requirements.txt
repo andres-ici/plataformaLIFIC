@@ -1,0 +1,4 @@
+gspread==5.7.2
+gspread-dataframe==3.3.0
+plotly==5.14.1
+supabase==2.4.3
