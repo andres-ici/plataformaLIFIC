@@ -62,7 +62,7 @@ def main():
     docentes = get_docentes(access_token)
     docente = st.selectbox(label = 'Docente', options = docentes, key = 'registro')
     ayudante = st.selectbox(label = 'Ayudante', options = ayudantes)
-    asignatura = st.selectbox(label = 'Asignatura', options = ['A1', 'A2', 'A3', 'A4'])
+    asignatura = st.selectbox(label = 'Asignatura', options = ['A1', 'A2', 'A3', 'A4', 'Laborante'])
     fecha = st.date_input(label = 'Fecha')
     horas = st.number_input(label = 'Tiempo (Horas)', min_value = 0.5, max_value = 8.0, step = 0.5)
     actividad = st.text_input(label = 'Actividad', max_chars = 100, placeholder = 'Detalle actividad')
@@ -85,7 +85,7 @@ def main():
         response = supabase.table('trabajo').select("nombre, fecha, horas, asignatura, docente, actividad").execute()
         df_tiempo = pd.DataFrame(response.data)
         df_tiempo = df_tiempo[df_tiempo['nombre'] == ayudante]
-        df_tiempo['mes'] = int(df_tiempo['fecha'].str.slice(5, 7))
+        df_tiempo['mes'] = df_tiempo['fecha'].str.slice(5, 7).astype(int)
         meses = {
             1: 'Enero',
             2: 'Febrero',
