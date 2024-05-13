@@ -6,9 +6,6 @@ from supabase import create_client, Client
 import time
 from PIL import Image
 
-#db
-#url = 'https://ghxnqvvyhuspmwgilenv.supabase.co'
-#key = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdoeG5xdnZ5aHVzcG13Z2lsZW52Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTMxOTIyNjIsImV4cCI6MjAyODc2ODI2Mn0.T4DM42Xisvow3D2IUKLctZJn4QHCaDqR95lWERdkiIU'
 
 url = st.secrets["urlSupabase"]
 key = st.secrets["keySupabase"]
