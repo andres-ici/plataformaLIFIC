@@ -1,3 +1,4 @@
+
 import streamlit as st
 import pandas as pd
 import gspread
@@ -5,9 +6,6 @@ from google.oauth2 import service_account
 import gspread_dataframe as gd
 import plotly.express as px
 from PIL import Image
-
-favicon = Image.open('logo_lific.png')
-st.set_page_config(page_title = 'Asistencia Teórica', page_icon = favicon)
 
 
 # Connect to Google Sheets
@@ -33,7 +31,7 @@ def verificar1(data):
 
     valor = [data.iloc[0,0]]
 
-    if valor[0] == "ID de la reunión":
+    if valor[0] == "Tema":
         return 1
     else:
         return 0
@@ -81,10 +79,10 @@ if (asistenciaFile and registroFile) is not None: #Varificar si se suben los arc
 
     if verificar1(asistencia) or verificar2(registro): #Verifica el formato de los csv subidos
 
-        duracionTotal = [asistencia.iloc[1,5]]
+        duracionTotal = [asistencia.iloc[1,3]]
         maximo =  int(duracionTotal[0])
         minimo = int(duracionTotal[0])*0.9*0.5
-        fecha = [asistencia.iloc[1,2]]
+        fecha = [asistencia.iloc[1,4]]
         fecha = fecha[0]
 
         asistencia = asistencia[asistencia[3] != "No"] #Se quita el creador de la reunion
@@ -99,6 +97,15 @@ if (asistenciaFile and registroFile) is not None: #Varificar si se suben los arc
 
         datosMerge = pd.merge(datosAsistencia, datosRegistro, how = "outer")
         datosMerge = datosMerge.reindex(columns=["Correo", "Matrícula", "Nombre", "Apellido", "Tiempo"])
+
+        
+        datosMerge['Matrícula'] = datosMerge['Matrícula'].astype('str').str.replace(r" ", r"", regex=False) #Se quitan los espacios 
+        datosMerge['Matrícula'] = datosMerge['Matrícula'].astype('str').str.replace(r".", r"", regex=False) #Se quitan los puntos
+        datosMerge['Matrícula'] = datosMerge['Matrícula'].astype('str').str.replace(r",", r"", regex=False) #Se quitan los puntos
+        datosMerge['Matrícula'] = datosMerge['Matrícula'].astype('str').str.replace(r"-", r"", regex=False) #Se quitan los guiones 
+        datosMerge['Matrícula'] = datosMerge['Matrícula'].astype('str').str.replace(r"_", r"", regex=False) #Se quitan los guiones 
+        datosMerge['Matrícula'] = datosMerge['Matrícula'].astype('str').str.upper() #Transforma a mayuscula
+
 
         datosMerge["Tiempo"] = datosMerge["Tiempo"].fillna(0).astype(int)
         datosMerge["Estado"] = ["Presente" if a >= minimo else "Ausente" for a in datosMerge["Tiempo"]]
@@ -170,15 +177,15 @@ if (asistenciaFile and registroFile) is not None: #Varificar si se suben los arc
 
             if asignatura == "A1":
 
-                modulo = st.selectbox("Módulo", ("1", "2"))
+                modulo = st.selectbox("Módulo", ("1"))
 
             if asignatura == "A2":
 
-                modulo = st.selectbox("Módulo", ("2"))
+                modulo = st.selectbox("Módulo", ("1", "2"))
 
             if asignatura == "A3":
 
-                modulo = st.selectbox("Módulo", ("1", "2"))
+                modulo = st.selectbox("Módulo", ("1"))
 
             if asignatura == "A4":
 
@@ -189,25 +196,25 @@ if (asistenciaFile and registroFile) is not None: #Varificar si se suben los arc
 
             if asignatura == "A1":
 
-                clase = st.selectbox("Clase", ("02", "04", "06", "08", "10", "12", "14", "16", "18", "20", "22", "24", "26", "28", "30", "32"))
+                clase = st.selectbox("Clase", ("01", "02", "04", "06", "08", "10", "12", "14", "16", "18", "20", "22", "24", "26", "28"))
 
             if asignatura == "A2":
 
-                clase = st.selectbox("Clase", ("02", "04", "06", "08", "10", "12", "14", "16", "18", "20", "22", "24", "26"))
+                clase = st.selectbox("Clase", ("01", "03", "05", "07", "09", "11", "13", "15", "17", "19", "21", "23", "25", "27", "29"))
 
             if asignatura == "A3":
 
-                clase = st.selectbox("Clase", ("02", "04", "06", "08", "10", "12", "14", "16", "19", "21", "23", "25", "27", "29"))
+                clase = st.selectbox("Clase", ("01", "03", "05", "07", "09", "11", "13", "15", "17", "19", "21", "23", "25", "27", "29"))
 
             if asignatura == "A4":
 
                 if modulo == "x":
 
-                    clase = st.selectbox("Clase", ("02", "05", "08", "11", "14", "17", "20", "23", "26", "30", "33", "36", "39", "42", "45"))
+                    clase = st.selectbox("Clase", ("02", "05", "08", "11", "14", "17", "20", "23", "26", "29", "32", "34", "37", "40", "43"))
 
                 else:
                     
-                    clase = st.selectbox("Clase", ("01", "04", "07", "10", "13", "16", "19", "22", "25", "29", "32", "35", "38", "41", "44"))
+                    clase = st.selectbox("Clase", ("01", "04", "07", "10", "13", "16", "19", "22", "25", "28", "31", "33", "36", "39", "42"))
 
         with st.spinner("Subiendo Datos, por favor esperar"):
 
@@ -215,14 +222,12 @@ if (asistenciaFile and registroFile) is not None: #Varificar si se suben los arc
 
                 if asignatura == "A1" and modulo == "1":
                     sheet = client.open_by_url(st.secrets["A1modulo1"])
-                elif asignatura == "A1" and modulo == "2":
-                    sheet = client.open_by_url(st.secrets["A1modulo2"])
+                elif asignatura == "A2" and modulo == "1":
+                    sheet = client.open_by_url(st.secrets["A2modulo1"])
                 elif asignatura == "A2" and modulo == "2":
                     sheet = client.open_by_url(st.secrets["A2modulo2"])
                 elif asignatura == "A3" and modulo == "1":
                     sheet = client.open_by_url(st.secrets["A3modulo1"])
-                elif asignatura == "A3" and modulo == "2":
-                    sheet = client.open_by_url(st.secrets["A3modulo2"])
                 elif asignatura == "A4" and modulo == "1":
                     sheet = client.open_by_url(st.secrets["A4modulo1"])
                 elif asignatura == "A4" and modulo == "x":
