@@ -27,7 +27,7 @@ Col2.image('https://i.imgur.com/YMei8p1.png',use_column_width='auto')
 
 st.title("Visualizador")
 
-<<<<<<< HEAD
+sheet = client.open_by_url(st.secrets["A4modulo1"])
 op_modalidad = st.selectbox("Elegir Modalidad", ["Teórico","Práctico"])
 
 op_asignatura = st.selectbox("Elegir Asignatura", ["A1","A2","A3","A4"])
@@ -67,17 +67,9 @@ else: #Práctico
             url_list = [st.secrets["PA4M02"],st.secrets["PA4M03"],st.secrets["PA4M04"],st.secrets["PA4M05"],st.secrets["PA4M06"],st.secrets["PA4M07"],st.secrets["PA4M08"],st.secrets["PA4M09"],st.secrets["PA4M10"],st.secrets["PA4M11"],st.secrets["PA4M12"],st.secrets["PA4Mx"]]
 
 
-
-    
-
-
-
-  
-
 st.text("Modalidad: {}, Asignatura: {}, Modulo: {}".format(op_modalidad,op_asignatura,op_modulo))
 
 st.text("url_list: {}".format(url_list))
-=======
 sheet = client.open_by_url(st.secrets["A1modulo1"])
 
 worksheet = sheet.worksheet("Asistencia")
@@ -87,10 +79,31 @@ df.columns = df.iloc[0]
 df = df[1:].reset_index(drop=True)
 df = df.drop(columns=["Porcentaje Justificadas", "Inasistencias justificadas", "Clases Realizadas"])
 df = df[df["Nombre"].notna() & (df["Nombre"].str.strip() != "")]
+df['Modalidad'] = 'Teórico'
+df['Módulo'] = 1
+df = df[['Nombre','Matrícula', 'Modalidad', 'Módulo', 'Porcentaje Asistencia', 'Inasistencias no justificadas']]
 
 st.write(df)
 
->>>>>>> 599fd1ff8d550fa682433c608f0a33640ea32821
+sheet2 = client.open_by_url(st.secrets["PA4M02"])
+
+worksheet2 = sheet2.worksheet("Asistencia")
+
+df2 = pd.DataFrame(worksheet2.get("C5:I"))
+df2.columns = df2.iloc[0]
+df2 = df2[1:].reset_index(drop=True)
+df2 = df2.drop(columns=["Porcentaje Justificadas", "Inasistencias justificadas", "Clases Realizadas"])
+df2 = df2[df2["Nombre"].notna() & (df2["Nombre"].str.strip() != "")]
+df2['Modalidad'] = 'Práctico'
+df2['Módulo'] = 2
+df2 = df2[['Nombre','Matrícula', 'Modalidad', 'Módulo', 'Porcentaje Asistencia', 'Inasistencias no justificadas']]
+
+st.write(df2)
+
+df_combined = pd.concat([df, df2], ignore_index=False)
+
+st.write(df_combined)
+
 st.text("Leer un archivo de GoogleSheet")
 
 st.text("Mostrar un archivo de GoogleSheet")
