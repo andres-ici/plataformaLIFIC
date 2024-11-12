@@ -66,6 +66,10 @@ else: #Práctico
             op_modulo = st.selectbox("Elegir Módulo", ["Todos","2","3","4","5","6","7","8","9","10","11","12","X"])
             url_list = [st.secrets["PA4M02"],st.secrets["PA4M03"],st.secrets["PA4M04"],st.secrets["PA4M05"],st.secrets["PA4M06"],st.secrets["PA4M07"],st.secrets["PA4M08"],st.secrets["PA4M09"],st.secrets["PA4M10"],st.secrets["PA4M11"],st.secrets["PA4M12"],st.secrets["PA4Mx"]]
 
+            if op_modulo == 'Todos':
+                for i in range(url_list):
+                    
+
 
 st.text("Modalidad: {}, Asignatura: {}, Modulo: {}".format(op_modalidad,op_asignatura,op_modulo))
 
