@@ -3,6 +3,31 @@ import pandas as pd
 import gspread
 from google.oauth2 import service_account
 import gspread_dataframe as gd
+import re
+
+def generarDF(url_list2):
+
+    dfFinal = pd.DataFrame(columns=['Nombre','Matrícula', 'Modalidad', 'Módulo', 'Porcentaje Asistencia', 'Inasistencias no justificadas'])
+
+    for i in range(len(url_list2)):
+
+        sheet = client.open_by_url(st.secrets[url_list2[i]])
+
+        worksheet = sheet.worksheet("Asistencia")
+
+        df = pd.DataFrame(worksheet.get("C5:I"))
+        df.columns = df.iloc[0]
+        df = df[1:].reset_index(drop=True)
+        df = df.drop(columns=["Porcentaje Justificadas", "Inasistencias justificadas", "Clases Realizadas"])
+        df = df[df["Nombre"].notna() & (df["Nombre"].str.strip() != "")]
+        df['Modalidad'] = 'Teórico'
+        df['Módulo'] = str(url_list2[i][-2:])
+        df = df[['Nombre','Matrícula', 'Modalidad', 'Módulo', 'Porcentaje Asistencia', 'Inasistencias no justificadas']]
+
+        dfFinal = df_combined = pd.concat([df, dfFinal], ignore_index=False)
+
+    return dfFinal
+
 
 
 # Connect to Google Sheets
@@ -32,7 +57,7 @@ op_modalidad = st.selectbox("Elegir Modalidad", ["Teórico","Práctico"])
 
 op_asignatura = st.selectbox("Elegir Asignatura", ["A1","A2","A3","A4"])
 # st.text(op_asignatura)
-   
+
 
 if op_modalidad == "Teórico":
 
@@ -47,8 +72,16 @@ if op_modalidad == "Teórico":
             op_modulo = st.selectbox("Elegir Módulo", ["Todos","1"])
             url_list = [st.secrets["A3modulo1"]]
         case "A4":
-            op_modulo = st.selectbox("Elegir Módulo", ["Todos","1","X"])
-            url_list = [st.secrets["A4modulo1"],st.secrets["A4modulox"]]
+            op_modulo = st.selectbox("Elegir Módulo", ["Todos","01"])
+            url_list2 = ["TA4M01"]
+            df = generarDF(url_list2)
+
+
+            if op_modulo == "Todos":
+                st.write(df)
+            else:
+                st.write(df[df["Módulo"] == op_modulo])
+
     
 
 else: #Práctico
@@ -63,50 +96,26 @@ else: #Práctico
             op_modulo = st.selectbox("Elegir Módulo", ["Todos","2","3","4","5"])
             url_list = [st.secrets["PA3M02"],st.secrets["PA3M03"],st.secrets["PA3M04"],st.secrets["PA3M05"]]
         case "A4":
-            op_modulo = st.selectbox("Elegir Módulo", ["Todos","2","3","4","5","6","7","8","9","10","11","12","X"])
-            url_list = [st.secrets["PA4M02"],st.secrets["PA4M03"],st.secrets["PA4M04"],st.secrets["PA4M05"],st.secrets["PA4M06"],st.secrets["PA4M07"],st.secrets["PA4M08"],st.secrets["PA4M09"],st.secrets["PA4M10"],st.secrets["PA4M11"],st.secrets["PA4M12"],st.secrets["PA4Mx"]]
+            op_modulo = st.selectbox("Elegir Módulo", ["Todos","02","03","04","05","06","07","08","09","10","11","12","0x"])
 
-            if op_modulo == 'Todos':
-                for i in range(url_list):
+            url_list2 = ["PA4M02", "PA4M03", "PA4M04", "PA4M05", "PA4M06", "PA4M07", "PA4M08", "PA4M09", "PA4M10", "PA4M11", "PA4M12", "PA4M0x"]
+            
+            st.text("Modalidad: {}, Asignatura: {}, Modulo: {}".format(op_modalidad,op_asignatura,op_modulo))
+
+            df = generarDF(url_list2)
+
+
+            if op_modulo == "Todos":
+                st.write(df)
+            else:
+                st.write(df[df["Módulo"] == op_modulo])
+
+                
+            
+
+              
                     
-
-
 st.text("Modalidad: {}, Asignatura: {}, Modulo: {}".format(op_modalidad,op_asignatura,op_modulo))
-
-st.text("url_list: {}".format(url_list))
-sheet = client.open_by_url(st.secrets["A1modulo1"])
-
-worksheet = sheet.worksheet("Asistencia")
-
-df = pd.DataFrame(worksheet.get("C5:I"))
-df.columns = df.iloc[0]
-df = df[1:].reset_index(drop=True)
-df = df.drop(columns=["Porcentaje Justificadas", "Inasistencias justificadas", "Clases Realizadas"])
-df = df[df["Nombre"].notna() & (df["Nombre"].str.strip() != "")]
-df['Modalidad'] = 'Teórico'
-df['Módulo'] = 1
-df = df[['Nombre','Matrícula', 'Modalidad', 'Módulo', 'Porcentaje Asistencia', 'Inasistencias no justificadas']]
-
-st.write(df)
-
-sheet2 = client.open_by_url(st.secrets["PA4M02"])
-
-worksheet2 = sheet2.worksheet("Asistencia")
-
-df2 = pd.DataFrame(worksheet2.get("C5:I"))
-df2.columns = df2.iloc[0]
-df2 = df2[1:].reset_index(drop=True)
-df2 = df2.drop(columns=["Porcentaje Justificadas", "Inasistencias justificadas", "Clases Realizadas"])
-df2 = df2[df2["Nombre"].notna() & (df2["Nombre"].str.strip() != "")]
-df2['Modalidad'] = 'Práctico'
-df2['Módulo'] = 2
-df2 = df2[['Nombre','Matrícula', 'Modalidad', 'Módulo', 'Porcentaje Asistencia', 'Inasistencias no justificadas']]
-
-st.write(df2)
-
-df_combined = pd.concat([df, df2], ignore_index=False)
-
-st.write(df_combined)
 
 st.text("Leer un archivo de GoogleSheet")
 
