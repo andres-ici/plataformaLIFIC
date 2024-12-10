@@ -65,144 +65,139 @@ op_modalidad = st.selectbox("Elegir Modalidad", ["Teórico","Práctico"])
 op_asignatura = st.selectbox("Elegir Asignatura", ["A1","A2","A3","A4"])
 # st.text(op_asignatura)
 
+if st.botton("Gener tablas"):
 
-if op_modalidad == "Teórico":
+    if op_modalidad == "Teórico":
 
-    match op_asignatura:
-        case "A1":
-            op_modulo = st.selectbox("Elegir Módulo", ["Todos","1"])
-            url_list2 = ["TA1M01"]
-            st.text("Modalidad: {}, Asignatura: {}, Modulo: {}".format(op_modalidad,op_asignatura,op_modulo))
-            df = generarDF(url_list2)
+        match op_asignatura:
+            case "A1":
+                op_modulo = st.selectbox("Elegir Módulo", ["Todos","1"])
+                url_list2 = ["TA1M01"]
+                st.text("Modalidad: {}, Asignatura: {}, Modulo: {}".format(op_modalidad,op_asignatura,op_modulo))
+                df = generarDF(url_list2)
 
-            if op_modulo == "Todos":
-                st.write(df)
-            else:
-                try:
-                    st.write(df[df["Módulo"] == int(op_modulo)])
-                except:
-                    st.write(df[df["Módulo"] == op_modulo])
-                    
-        case "A2":
-            op_modulo = st.selectbox("Elegir Módulo", ["Todos","1","2"])
-            url_list2 = ["TA2M01", "TA2M02"]
-            st.text("Modalidad: {}, Asignatura: {}, Modulo: {}".format(op_modalidad,op_asignatura,op_modulo))
-            df = generarDF(url_list2)
+                if op_modulo == "Todos":
+                    st.write(df)
+                else:
+                    try:
+                        st.write(df[df["Módulo"] == int(op_modulo)])
+                    except:
+                        st.write(df[df["Módulo"] == op_modulo])
+                        
+            case "A2":
+                op_modulo = st.selectbox("Elegir Módulo", ["Todos","1","2"])
+                url_list2 = ["TA2M01", "TA2M02"]
+                st.text("Modalidad: {}, Asignatura: {}, Modulo: {}".format(op_modalidad,op_asignatura,op_modulo))
+                df = generarDF(url_list2)
 
-            if op_modulo == "Todos":
-                st.write(df)
-            else:
-                try:
-                    st.write(df[df["Módulo"] == int(op_modulo)])
-                except:
-                    st.write(df[df["Módulo"] == op_modulo])
-                    
-        case "A3":
-            op_modulo = st.selectbox("Elegir Módulo", ["Todos","1"])
-            url_list2 = ["TA3M01"]
-            st.text("Modalidad: {}, Asignatura: {}, Modulo: {}".format(op_modalidad,op_asignatura,op_modulo))
-            df = generarDF(url_list2)
+                if op_modulo == "Todos":
+                    st.write(df)
+                else:
+                    try:
+                        st.write(df[df["Módulo"] == int(op_modulo)])
+                    except:
+                        st.write(df[df["Módulo"] == op_modulo])
+                        
+            case "A3":
+                op_modulo = st.selectbox("Elegir Módulo", ["Todos","1"])
+                url_list2 = ["TA3M01"]
+                st.text("Modalidad: {}, Asignatura: {}, Modulo: {}".format(op_modalidad,op_asignatura,op_modulo))
+                df = generarDF(url_list2)
 
-            if op_modulo == "Todos":
-                st.write(df)
-            else:
-                try:
-                    st.write(df[df["Módulo"] == int(op_modulo)])
-                except:
-                    st.write(df[df["Módulo"] == op_modulo])
-                    
-        case "A4":
-            op_modulo = st.selectbox("Elegir Módulo", ["Todos","01"])
-            url_list2 = ["TA4M01"]
-            st.text("Modalidad: {}, Asignatura: {}, Modulo: {}".format(op_modalidad,op_asignatura,op_modulo))
-            df = generarDF(url_list2)
+                if op_modulo == "Todos":
+                    st.write(df)
+                else:
+                    try:
+                        st.write(df[df["Módulo"] == int(op_modulo)])
+                    except:
+                        st.write(df[df["Módulo"] == op_modulo])
+                        
+            case "A4":
+                op_modulo = st.selectbox("Elegir Módulo", ["Todos","01"])
+                url_list2 = ["TA4M01"]
+                st.text("Modalidad: {}, Asignatura: {}, Modulo: {}".format(op_modalidad,op_asignatura,op_modulo))
+                df = generarDF(url_list2)
 
-            if op_modulo == "Todos":
-                st.write(df)
-            else:
-                try:
-                    st.write(df[df["Módulo"] == int(op_modulo)])
-                except:
-                    st.write(df[df["Módulo"] == op_modulo])
+                if op_modulo == "Todos":
+                    st.write(df)
+                else:
+                    try:
+                        st.write(df[df["Módulo"] == int(op_modulo)])
+                    except:
+                        st.write(df[df["Módulo"] == op_modulo])
 
-    
+        
 
-else: #Práctico
-    match op_asignatura:
-        case "A1":
-            op_modulo = st.selectbox("Elegir Módulo", ["Todos","2","3"])
-            url_list = [st.secrets["PA1M02"],st.secrets["PA1M03"]]
-            
-            url_list2 = ["PA1M02", "PA1M03"]
-            
-            st.text("Modalidad: {}, Asignatura: {}, Modulo: {}".format(op_modalidad,op_asignatura,op_modulo))
+    else: #Práctico
+        match op_asignatura:
+            case "A1":
+                op_modulo = st.selectbox("Elegir Módulo", ["Todos","2","3"])
+                url_list = [st.secrets["PA1M02"],st.secrets["PA1M03"]]
+                
+                url_list2 = ["PA1M02", "PA1M03"]
+                
+                st.text("Modalidad: {}, Asignatura: {}, Modulo: {}".format(op_modalidad,op_asignatura,op_modulo))
 
-            df = generarDF(url_list2)
+                df = generarDF(url_list2)
 
-            if op_modulo == "Todos":
-                st.write(df)
-            else:
-                try:
-                    st.write(df[df["Módulo"] == int(op_modulo)])
-                except:
-                    st.write(df[df["Módulo"] == op_modulo])
-                    
-        case "A2":
-            op_modulo = st.selectbox("Elegir Módulo", ["Todos","4","5","6","7","8","9","10","11","12","13","14","15","17","18","19","20","21","22","23","24"])
-            
-            url_list2 = ["PA2M04", "PA2M05", "PA2M06", "PA2M07", "PA2M08", "PA2M09", "PA2M10", "PA2M11", "PA2M12", "PA2M13", "PA2M14", "PA2M15", "PA2M15", "PA2M17", "PA2M18", "PA2M19", "PA2M20", "PA2M21", "PA2M22", "PA2M23", "PA2M24"]
-            
-            st.text("Modalidad: {}, Asignatura: {}, Modulo: {}".format(op_modalidad,op_asignatura,op_modulo))
+                if op_modulo == "Todos":
+                    st.write(df)
+                else:
+                    try:
+                        st.write(df[df["Módulo"] == int(op_modulo)])
+                    except:
+                        st.write(df[df["Módulo"] == op_modulo])
+                        
+            case "A2":
+                op_modulo = st.selectbox("Elegir Módulo", ["Todos","4","5","6","7","8","9","10","11","12","13","14","15","17","18","19","20","21","22","23","24"])
+                
+                url_list2 = ["PA2M04", "PA2M05", "PA2M06", "PA2M07", "PA2M08", "PA2M09", "PA2M10", "PA2M11", "PA2M12", "PA2M13", "PA2M14", "PA2M15", "PA2M15", "PA2M17", "PA2M18", "PA2M19", "PA2M20", "PA2M21", "PA2M22", "PA2M23", "PA2M24"]
+                
+                st.text("Modalidad: {}, Asignatura: {}, Modulo: {}".format(op_modalidad,op_asignatura,op_modulo))
 
-            df = generarDF(url_list2)
+                df = generarDF(url_list2)
 
-            if op_modulo == "Todos":
-                st.write(df)
-            else:
-                try:
-                    st.write(df[df["Módulo"] == int(op_modulo)])
-                except:
-                    st.write(df[df["Módulo"] == op_modulo])
-            
-        case "A3":
-            op_modulo = st.selectbox("Elegir Módulo", ["Todos","2","3","4","5"])
-            
-            url_list2 = ["PA3M02", "PA3M03", "PA3M04", "PA3M05"]
-            
-            st.text("Modalidad: {}, Asignatura: {}, Modulo: {}".format(op_modalidad,op_asignatura,op_modulo))
+                if op_modulo == "Todos":
+                    st.write(df)
+                else:
+                    try:
+                        st.write(df[df["Módulo"] == int(op_modulo)])
+                    except:
+                        st.write(df[df["Módulo"] == op_modulo])
+                
+            case "A3":
+                op_modulo = st.selectbox("Elegir Módulo", ["Todos","2","3","4","5"])
+                
+                url_list2 = ["PA3M02", "PA3M03", "PA3M04", "PA3M05"]
+                
+                st.text("Modalidad: {}, Asignatura: {}, Modulo: {}".format(op_modalidad,op_asignatura,op_modulo))
 
-            df = generarDF(url_list2)
+                df = generarDF(url_list2)
 
-            if op_modulo == "Todos":
-                st.write(df)
-            else:
-                try:
-                    st.write(df[df["Módulo"] == int(op_modulo)])
-                except:
-                    st.write(df[df["Módulo"] == op_modulo])
-                    
-        case "A4":
-            op_modulo = st.selectbox("Elegir Módulo", ["Todos","2","3","4","5","6","7","8","9","10","11","12","x"])
+                if op_modulo == "Todos":
+                    st.write(df)
+                else:
+                    try:
+                        st.write(df[df["Módulo"] == int(op_modulo)])
+                    except:
+                        st.write(df[df["Módulo"] == op_modulo])
+                        
+            case "A4":
+                op_modulo = st.selectbox("Elegir Módulo", ["Todos","2","3","4","5","6","7","8","9","10","11","12","x"])
 
-            url_list2 = ["PA4M02", "PA4M03", "PA4M04", "PA4M05", "PA4M06", "PA4M07", "PA4M08", "PA4M09", "PA4M10", "PA4M11", "PA4M12", "PA4M0x"]
-            
-            st.text("Modalidad: {}, Asignatura: {}, Modulo: {}".format(op_modalidad,op_asignatura,op_modulo))
+                url_list2 = ["PA4M02", "PA4M03", "PA4M04", "PA4M05", "PA4M06", "PA4M07", "PA4M08", "PA4M09", "PA4M10", "PA4M11", "PA4M12", "PA4M0x"]
+                
+                st.text("Modalidad: {}, Asignatura: {}, Modulo: {}".format(op_modalidad,op_asignatura,op_modulo))
 
-            df = generarDF(url_list2)
+                df = generarDF(url_list2)
 
-            if op_modulo == "Todos":
-                st.write(df)
-            else:
-                try:
-                    st.write(df[df["Módulo"] == int(op_modulo)])
-                except:
-                    st.write(df[df["Módulo"] == op_modulo])
+                if op_modulo == "Todos":
+                    st.write(df)
+                else:
+                    try:
+                        st.write(df[df["Módulo"] == int(op_modulo)])
+                    except:
+                        st.write(df[df["Módulo"] == op_modulo])
 
-                    
-st.text("Modalidad: {}, Asignatura: {}, Modulo: {}".format(op_modalidad,op_asignatura,op_modulo))
+                        
 
-st.text("Leer un archivo de GoogleSheet")
-
-st.text("Mostrar un archivo de GoogleSheet")
-
-st.text("Poder escoger archivo")
