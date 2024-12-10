@@ -31,7 +31,7 @@ def verificar1(data):
 
     valor = [data.iloc[0,0]]
 
-    if valor[0] == "Tema":
+    if valor[0] == "ID de la reunión":
         return 1
     else:
         return 0
@@ -52,7 +52,7 @@ Col1, Col2, Col3 = st.columns(3)
 
 #if st.theme() == 'light':
 
-Col2.image('https://i.imgur.com/YMei8p1.png',use_container_width ='auto')
+Col2.image('https://i.imgur.com/YMei8p1.png',use_column_width='auto')
 
 # else:
 
@@ -79,10 +79,10 @@ if (asistenciaFile and registroFile) is not None: #Varificar si se suben los arc
 
     if verificar1(asistencia) or verificar2(registro): #Verifica el formato de los csv subidos
 
-        duracionTotal = [asistencia.iloc[1,3]]
+        duracionTotal = [asistencia.iloc[1,5]]
         maximo =  int(duracionTotal[0])
         minimo = int(duracionTotal[0])*0.9*0.5
-        fecha = [asistencia.iloc[1,4]]
+        fecha = [asistencia.iloc[1,2]]
         fecha = fecha[0]
 
         asistencia = asistencia[asistencia[3] != "No"] #Se quita el creador de la reunion
@@ -210,7 +210,7 @@ if (asistenciaFile and registroFile) is not None: #Varificar si se suben los arc
 
                 if modulo == "x":
 
-                    clase = st.selectbox("Clase", ("02", "05", "08", "11", "14", "17", "20", "23", "26", "29", "32", "34", "37", "40", "43"))
+                    clase = st.selectbox("Clase", ("02", "05", "08", "11", "14", "17", "20", "23", "26", "30", "33", "36", "39", "42", "45"))
 
                 else:
                     
